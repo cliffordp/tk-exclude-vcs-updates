@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require_once( 'class-core.php' );
-require_once( 'class-plugins.php' );
+require_once( 'src/class-core.php' );
+require_once( 'src/class-plugins.php' );
 
 new Plugins();
