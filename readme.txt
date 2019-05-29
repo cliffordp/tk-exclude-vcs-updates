@@ -20,6 +20,7 @@ Install and activate like any other plugin!
 
 == Changelog ==
 
-= [1.0.0] 2019-05-29 =
+= 1.0.0 =
 
+* May 29, 2019
 * Initial release
