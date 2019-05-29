@@ -1,7 +1,7 @@
 === TK Exclude VCS Updates ===
 Contributors: cliffpaulick
 Tags: updates, vcs, git, svn, hg, mercurial
-Requires at least: 4.5
+Requires at least: 4.6
 Tested up to: 5.2.1
 Requires PHP: 5.6
 Stable tag: 1.0.0
