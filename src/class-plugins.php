@@ -36,21 +36,23 @@ if ( ! class_exists( Plugins::class ) ) {
 		 *
 		 * @link https://wordpress.org/support/topic/disable-updates-for-vcs-plugins-themes-like-git-svn-etc/
 		 *
-		 * @param stdClass $value
+		 * @param stdClass $list
 		 *
 		 * @see  \get_plugin_updates()
 		 *
 		 * @return stdClass
 		 */
-		public function process_updates( $value ) {
+		public function process_updates( $list ) {
 			if (
 				current_user_can( 'update_plugins' )
 				&& defined( 'WP_PLUGIN_DIR' )
-				&& isset( $value )
-				&& is_object( $value )
-				&& ! empty( $value->response )
+				&& isset( $list )
+				&& is_object( $list )
+				&& ! empty( $list->response )
 			) {
-				foreach ( $value->response as $plugin_file => $plugin_data ) {
+				$plugins = [];
+
+				foreach ( $list->response as $plugin_file => $plugin_data ) {
 					$plugin_dir_name = strstr( $plugin_file, DIRECTORY_SEPARATOR, true );
 
 					$plugin_location = trailingslashit( WP_PLUGIN_DIR ) . $plugin_dir_name;
@@ -59,7 +61,7 @@ if ( ! class_exists( Plugins::class ) ) {
 						$find = trailingslashit( $plugin_location ) . $vcs_name;
 
 						if ( file_exists( $find ) ) {
-							$this->excluded_plugins[] = $plugin_dir_name;
+							$plugins[] = $plugin_dir_name;
 
 							/**
 							 * Action hook when a plugin is found to have VCS and therefore removed from plugin updates list.
@@ -71,14 +73,16 @@ if ( ! class_exists( Plugins::class ) ) {
 							 */
 							do_action( __FUNCTION__, $plugin_dir_name, (array) $plugin_data, $plugin_file, $find );
 
-							unset( $value->response[$plugin_file] );
+							unset( $list->response[ $plugin_file ] );
 							continue;
 						}
 					}
 				}
+
+				$this->excluded_plugins = array_unique( $plugins );
 			}
 
-			return $value;
+			return $list;
 		}
 
 		/**
