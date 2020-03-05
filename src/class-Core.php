@@ -7,6 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use stdClass;
+
 if ( ! class_exists( Core::class ) ) {
 	/**
 	 * Core class.
@@ -30,6 +32,8 @@ if ( ! class_exists( Core::class ) ) {
 
 		/**
 		 * Process the list of plugins/themes.
+		 *
+		 * @param stdClass $list
 		 */
 		public abstract function process_updates( $list );
 

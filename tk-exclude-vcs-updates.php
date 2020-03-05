@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       TK Exclude VCS Updates
  * Description:       Exclude plugins whose folders contain a VCS directory from appearing in the list of updates.
- * Version:           1.0.0
+ * Version:           1.1.0
  * GitHub Plugin URI: https://github.com/cliffordp/tk-exclude-vcs-updates
  * Author:            TourKick LLC (Clifford Paulick)
  * Author URI:        https://tourkick.com/
@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require_once( 'src/class-core.php' );
-require_once( 'src/class-plugins.php' );
+require_once( 'src/class-Core.php' );
+require_once( 'src/class-Plugins.php' );
 
 new Plugins();
