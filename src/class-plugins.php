@@ -100,7 +100,7 @@ if ( ! class_exists( Plugins::class ) ) {
 				'update-core' === $current_screen->base
 				|| 'plugins' === $current_screen->base
 			) {
-				$list = sprintf( '<strong>%s</strong>', implode( $this->excluded_plugins, ', ' ) );
+				$list = sprintf( '<strong>%s</strong>', implode( ', ', $this->excluded_plugins ) );
 
 				echo '<div class="notice notice-warning"><p>';
 				echo sprintf( esc_html__( 'These plugins were excluded from update checks because of having version control: %s', 'tk-exclude-vcs-updates' ), $list );
