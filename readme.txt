@@ -2,9 +2,9 @@
 Contributors: cliffpaulick
 Tags: updates, vcs, git, svn, hg, mercurial
 Requires at least: 4.6
-Tested up to: 5.2.1
+Tested up to: 5.3.2
 Requires PHP: 5.6
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPL version 3 or any later version
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -20,7 +20,13 @@ Install and activate like any other plugin!
 
 == Changelog ==
 
+= 1.1.0 =
+
+* March 5, 2020
+* Add orange background styling to the checkbox area of each excluded plugin in the Plugins List: [Screenshot](https://user-images.githubusercontent.com/1812179/75998828-0692ac80-5ec7-11ea-9f85-bfa47b8fd544.png)
+* Fix deprecation notice from the order of parameters passed to `implode()`.
+
 = 1.0.0 =
 
 * May 29, 2019
-* Initial release
+* Initial release.
