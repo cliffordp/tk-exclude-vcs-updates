@@ -15,7 +15,7 @@ if ( ! class_exists( Plugins::class ) ) {
 	 */
 	class Plugins extends Core {
 		/**
-		 * The list of plugins excluded.
+		 * The list of plugin slugs detected as having VCS and an available update (ones to be excluded from updates).
 		 *
 		 * @var array
 		 */
@@ -27,6 +27,7 @@ if ( ! class_exists( Plugins::class ) ) {
 		public function __construct() {
 			add_filter( 'site_transient_update_plugins', [ $this, 'process_updates' ], 100 );
 			add_filter( 'admin_notices', [ $this, 'notice' ], 5 );
+			add_action( 'admin_head', [ $this, 'style_each_excluded_plugin_in_plugins_list' ] );
 		}
 
 		/**
@@ -86,30 +87,76 @@ if ( ! class_exists( Plugins::class ) ) {
 		}
 
 		/**
-		 * Display the notice about each excluded plugin, only on the Update Core or the Plugins List screens.
+		 * Whether or not we have exclusions and are on the correct admin screen.
+		 *
+		 * @return bool
 		 */
-		public function notice() {
+		private function should_appear() {
 			$current_screen = get_current_screen();
-
-			$this->excluded_plugins = array_unique( $this->excluded_plugins );
 
 			if (
 				empty( $this->excluded_plugins )
 				|| empty( $current_screen->base )
 			) {
-				return;
+				return false;
 			}
 
 			if (
 				'update-core' === $current_screen->base
 				|| 'plugins' === $current_screen->base
 			) {
-				$list = sprintf( '<strong>%s</strong>', implode( ', ', $this->excluded_plugins ) );
-
-				echo '<div class="notice notice-warning"><p>';
-				echo sprintf( esc_html__( 'These plugins were excluded from update checks because of having version control: %s', 'tk-exclude-vcs-updates' ), $list );
-				echo '</p></div>';
+				return true;
 			}
+
+			return false;
+		}
+
+		/**
+		 * Display the notice about each excluded plugin, only on the Update Core or the Plugins List screens.
+		 */
+		public function notice() {
+			if ( ! $this->should_appear() ) {
+				return;
+			}
+
+			$list = sprintf( '<strong>%s</strong>', implode( ', ', $this->excluded_plugins ) );
+
+			echo '<div class="notice notice-warning"><p>';
+			echo sprintf( esc_html__( 'These plugins were excluded from update checks because of having version control: %s', 'tk-exclude-vcs-updates' ), $list );
+			echo '</p></div>';
+		}
+
+		/**
+		 * Output CSS for plugins excluded due to VCS in the Plugins List.
+		 *
+		 * @link  https://user-images.githubusercontent.com/1812179/75998828-0692ac80-5ec7-11ea-9f85-bfa47b8fd544.png Screenshot.
+		 *
+		 * @since 1.1.0
+		 */
+		public function style_each_excluded_plugin_in_plugins_list() {
+			if ( ! $this->should_appear() ) {
+				return;
+			}
+
+			$parent = PHP_EOL . 'table.plugins';
+
+			$selector = '';
+
+			foreach ( $this->excluded_plugins as $plugin ) {
+				$selector .= sprintf( '%s tr[data-slug="%s"] th,', $parent, $plugin ); // the checkbox area
+			}
+
+			// Remove the final comma so we have a valid CSS selector.
+			$selector = rtrim( $selector, ',' );
+			?>
+
+			<style id="tk-exclude-vcs-updates" type="text/css">
+				<?php echo $selector; ?>
+				{
+					background-color: #ffb900; /* Same color as admin 'warning' notice. */
+				}
+			</style>
+			<?php
 		}
 
 	} // end class
