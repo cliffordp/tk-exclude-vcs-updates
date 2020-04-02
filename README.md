@@ -1,3 +1,7 @@
+*After creating this, I learned a more full-featured alternative exists.*
+
+**You might prefer this one, instead: [Local Development plugin on WP.org](https://wordpress.org/plugins/local-development/) and [on GitHub](https://github.com/afragen/local-development)**
+
 ### Screenshots
 
 An Admin Notice
